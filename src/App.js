@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import Main from './pages/main';
-import Header from './components/header';
+import TopMenu from './components/top-menu';
 import DashboardProvider from './utils/context';
 
 function App() {
   return (
     <DashboardProvider>
-      <Header />
+      <TopMenu />
       <Main />
     </DashboardProvider>
   );
