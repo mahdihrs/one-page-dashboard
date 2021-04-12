@@ -1,15 +1,21 @@
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
+import { useQueryParams, StringParam } from 'use-query-params';
 import styled from 'styled-components';
 
 import { DATE_PICKER } from '../utils/constants';
+import { queryDateFormatter } from '../utils/helpers';
 
 const { YEARS, MONTHS } = DATE_PICKER;
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   & .react-datepicker {
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
   }
   & .react-datepicker__month-container {
     width: 100%;
@@ -40,6 +46,9 @@ const Container = styled.div`
     border: 0;
     background-color: #FFFFFF;
   }
+  & select {
+    border: 0;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -57,31 +66,42 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const BottomButtons = styled.button`
+  background-color: ${props => props.filter ? '#82C341 !important;' : '#FFFFFF;'}
+`;
+
 function DatePickerComponent() {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(null);
+  const [query, setQuery] = useQueryParams({
+    startDate: StringParam,
+    endDate: StringParam
+  });
+
+  const currentYear = new Date().getFullYear();
+
   const onChange = dates => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
   };
-  const currentYear = new Date().getFullYear();
 
-  // const years = [1990, 1991, 1992, 1993, 1994, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
-  // const months = [
-  //   "January",
-  //   "February",
-  //   "March",
-  //   "April",
-  //   "May",
-  //   "June",
-  //   "July",
-  //   "August",
-  //   "September",
-  //   "October",
-  //   "November",
-  //   "December"
-  // ];
+  const handleCancel = () => {
+    setQuery({
+      startDate: undefined,
+      endDate: undefined
+    });
+    setStartDate(new Date());
+    setEndDate(null);
+  }
+  
+  const handleFinish = () => {
+    setQuery({
+      startDate: queryDateFormatter(startDate),
+      endDate: queryDateFormatter(endDate)
+    });
+  }
+
   return (
     <Container>
       <DatePicker
@@ -108,9 +128,7 @@ function DatePickerComponent() {
               {"<"}
             </button>
             <select
-              // value={months[getMonth(date)]}
               value={MONTHS[new Date(date).getMonth()]}
-              // value={new Date(date).getMonth()}
               onChange={({ target: { value } }) =>
                 changeMonth(MONTHS.indexOf(value))
               }
@@ -121,7 +139,6 @@ function DatePickerComponent() {
                 </option>
               ))}
             </select>
-
             <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
               {">"}
             </button>
@@ -140,7 +157,6 @@ function DatePickerComponent() {
                 </option>
               ))}
             </select>
-
             <button onClick={increaseYear} disabled={new Date(date).getFullYear() === currentYear}>
               {">"}
             </button>
@@ -155,8 +171,8 @@ function DatePickerComponent() {
         style={{ height: '400px', width: '400px' }}
       >
         <ButtonWrapper>
-          <button>Cancel</button>
-          <button>Filter</button>
+          <BottomButtons onClick={handleCancel}>Cancel</BottomButtons>
+          <BottomButtons filter="true" onClick={handleFinish}>Filter</BottomButtons>
         </ButtonWrapper>
       </DatePicker>
     </Container>
