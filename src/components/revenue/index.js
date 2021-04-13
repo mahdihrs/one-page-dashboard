@@ -1,78 +1,72 @@
 import * as React from 'react';
-import dayjs from 'dayjs';
+import styled from 'styled-components';
+import { useQueryParams, StringParam } from 'use-query-params';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import HighchartsConversionPie from 'highcharts/highcharts-more';
 
+import ChartWrapper from '../chart-wrapper';
+import MonthPicker from '../month-picker';
 import WidgetWrapper from '../widget-wrapper';
 import CardHeader from '../card-header';
 import { revenueAreaSpline } from './chart-config';
 import { useDashboard } from '../../utils/context';
+import transformRevenueData from '../../utils/helpers/map-revenue-data';
+import useMediaQuery from '../../utils/media-queries';
 
 HighchartsConversionPie(Highcharts);
 
-function mapRevenueData(data) {
-  const completedData = data?.filter(order => order.status === 'completed');
-  const revenueToShow = completedData?.map(({ due_date, conversion_revenue, status, ...rest }, index) => {
-    const hourToSec = dayjs(due_date).get('hour') * 3600;
-    const minToSec = dayjs(due_date).minute() * 60;
-    const secTotal = hourToSec + minToSec;
+const SubHeadingText = styled.p`
+  color: #9C9C9C;
+  font-weight: 600;
+`;
 
-    const dayIndex = dayjs(due_date).day() === 0 ? 7 : dayjs(due_date).day();
-    const xValue = (secTotal / 86400) + dayIndex;
-
-    return status === 'completed' && {
-      conversion_revenue,
-      due_date,
-      chartValue: [xValue, +conversion_revenue],
-      // status,
-      ...rest
-    }
-  })
-  // console.log(revenueToShow)
-
-  // TO DO separate to dedicated function 
-  const totalRevenue = data?.reduce((accumulator, order) => accumulator + +order.conversion_revenue, 0);
-
-  return { revenueToShow, totalRevenue };
-}
+const TotalRevenue = styled.p`
+  font-weight: 700;
+  font-size: 24px;
+`;
 
 function Revenue() {
   const [{ orders }] = useDashboard();
-  const { revenueToShow, totalRevenue } = mapRevenueData(orders);
+  const [{ revStart, revEnd }] = useQueryParams({
+    revStart: StringParam,
+    revEnd: StringParam
+  });
 
-  const sortedRevenue = revenueToShow?.sort((a, b) => (a.chartValue[0] > b.chartValue[0]) ? 1 : -1)
-  const el = document.getElementById('revenue');
-  const revenueEl = document.getElementById('revenue-chart');
-
-  // const  resize = React.useCallback(() => {
-  //   revenueEl.width = el.clientWidth;
-  // }, [el.clientWidth, revenueEl]);
-
-  // React.useEffect(() => {
-  //   window.addEventListener('resize', resize)
-
-  //   return () => window.removeEventListener('resize');
-  // }, [resize]);
-
-  // console.log(el?.clientWidth, revenueEl?.clientWidth)
+  const width = useMediaQuery({
+    desktopWidth: 600,
+    smallDesktopWidth: 600,
+    tabletWidth: 950,
+    midMobileWidth: 620,
+    mobileWidth: 320
+  });
+  const { revenueToShow, totalRevenue } = transformRevenueData({ orders, revStart, revEnd});
+  const sortedRevenue = revenueToShow?.sort((a, b) => (a.chartValue[0] > b.chartValue[0]) ? 1 : -1);
 
   return (
-    <WidgetWrapper id="revenue">
+    <WidgetWrapper id="revenue" xs={24} md={24} lg={24} xl={11}>
       <CardHeader
         title="Revenue"
-        rightComponent={<p>righty</p>}
+        rightComponent={<MonthPicker />}
       />
-      <HighchartsReact
-        id="revenue-chart"
-        highcharts={Highcharts}
-        options={revenueAreaSpline({
-          data: sortedRevenue,
-          width: el?.clientWidth
-        })}
-      />
+      <ChartWrapper>
+        <HighchartsReact
+          id="revenue-chart"
+          highcharts={Highcharts}
+          options={revenueAreaSpline({
+            data: sortedRevenue,
+            width
+          })}
+        />
+      </ChartWrapper>
+      {totalRevenue && (
+        <>
+          <SubHeadingText>Total Revenue</SubHeadingText>
+          <TotalRevenue>${totalRevenue}</TotalRevenue>
+        </>
+      )}
     </WidgetWrapper>
-  )
+  );
 }
 
 export default Revenue;

@@ -2,14 +2,23 @@ import dayjs from 'dayjs';
 
 import { TIME_STAMP } from '../constants';
 
-function transformRevenueData(data) {
-  const revenueToShow = getRevenueDataChart(data);
-  const totalRevenue = getTotalRevenue(data);
+function transformRevenueData({ orders, ...rest }) {
+  const revenueToShow = getRevenueDataChart({ orders, ...rest });
+  const totalRevenue = getTotalRevenue(orders);
   return { revenueToShow, totalRevenue };
 }
 
-function getRevenueDataChart(data) {
-  const completedData = data?.filter(order => order.status === 'completed');
+function getRevenueDataChart({ orders, revStart, revEnd }) {
+  const completedData = orders?.filter(order => {
+    const unixStart = dayjs(revStart).unix();
+    const unixEnd = dayjs(revEnd).add(1, 'month').unix();
+    const unixDueOrder = dayjs(order.due_date).unix();
+    if (revStart && revEnd) {
+      return order.status === 'completed' && (unixDueOrder > unixStart && unixDueOrder <= unixEnd);
+    }
+    return order.status === 'completed';
+  });
+
   const revenueToShow = completedData?.map(({ due_date, conversion_revenue, status, ...rest }) => {
     const hourToSec = dayjs(due_date).get('hour') * TIME_STAMP.SECONDS_IN_A_HOUR;
     const minToSec = dayjs(due_date).minute() * TIME_STAMP.SECONDS_IN_A_MINUTE;
@@ -23,8 +32,8 @@ function getRevenueDataChart(data) {
       due_date,
       chartValue: [xValue, +conversion_revenue],
       ...rest
-    }
-  })
+    };
+  });
   return revenueToShow;
 }
 

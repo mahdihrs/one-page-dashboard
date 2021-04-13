@@ -25,7 +25,7 @@ function MonthPicker() {
       picker="month"
       format="MMM-YYYY"
       onChange={onChange}
-      value={[dayjs(query.revStart), dayjs(query.revEnd)]}
+      value={query.revStart && [dayjs(query.revStart), dayjs(query.revEnd)]}
     />
   );
 }

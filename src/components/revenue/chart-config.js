@@ -4,20 +4,20 @@ function getTooltip(point) {
   Item: <b>${findData.conversion_item}</b><br />
   Location: <b>${findData.location}</b><br />
   Revenue: $<b>${findData.conversion_revenue}</b>
-  `
+  `;
 }
 
 export function revenueAreaSpline({ data = [], width }) {
   return {
     chart: {
       type: 'area',
-      width: 500
+      width
     },
     accessibility: {
       description: ''
     },
     title: {
-      text: 'Revenue'
+      text: ''
     },
     subtitle: {
       text: ''
@@ -27,19 +27,19 @@ export function revenueAreaSpline({ data = [], width }) {
         formatter: function () {
           switch (this.value) {
             case 1:
-              return 'Monday'
+              return 'Monday';
             case 2:
-              return 'Tuesday'
+              return 'Tuesday';
             case 3:
-              return 'Wednesday'
+              return 'Wednesday';
             case 4:
-              return 'Thursday'
+              return 'Thursday';
             case 5:
-              return 'Friday'
+              return 'Friday';
             case 6:
-              return 'Saturday'
+              return 'Saturday';
             case 7:
-              return 'Sunday'
+              return 'Sunday';
             default:
               return;
           }
@@ -61,7 +61,7 @@ export function revenueAreaSpline({ data = [], width }) {
     },
     tooltip: {
       formatter: function() {
-        return getTooltip(this.point)
+        return getTooltip(this.point);
       }
     },
     plotOptions: {
@@ -84,6 +84,6 @@ export function revenueAreaSpline({ data = [], width }) {
       name: 'Revenue',
       data: [...data.map(val => [...val.chartValue, val.full_name])],
       restData: data
-    }],
-  }
+    }]
+  };
 }
