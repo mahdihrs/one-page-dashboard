@@ -11,7 +11,7 @@ function dashboardReducer(state, action) {
         ...state,
         users: action.users,
         orders: action.orders
-      }
+      };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -20,10 +20,10 @@ function dashboardReducer(state, action) {
 export default function DashboardProvider(props) {
   const [state, dispatch] = React.useReducer(dashboardReducer, {
     conversion: null,
-    users: null,
+    users: {},
     revenue: null,
     orders: null
-  })
+  });
 
   const value = React.useMemo(() => [state, dispatch], [state, dispatch]);
   return <DashboardContext.Provider value={value} {...props} />;

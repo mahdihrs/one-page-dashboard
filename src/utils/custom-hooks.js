@@ -12,9 +12,8 @@ export default function useFetch() {
 
     const fetchData = async () => {
       try {
-        // TO DO : ngapain nulis ulang kan udah di-define di base url
-        const res = await api.get('https://ecdba7fe-ec10-4d90-8d0e-80f8364c7624.mock.pstmn.io/takehometest/frontend/web/dashboard', {
-          cancelToken: source.token,
+        const res = await api.get('/', {
+          cancelToken: source.token
         });
 
         const data = res?.data.data;
@@ -25,13 +24,13 @@ export default function useFetch() {
         setLoading(false);
         setError(error);
       }
-    }
+    };
     fetchData();
   }, []);
 
   return {
     response,
     loading,
-    error,
+    error
   };
 }

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import DatePicker from 'react-datepicker';
+import { Col } from 'antd';
 import { useQueryParams, StringParam } from 'use-query-params';
 import styled from 'styled-components';
 
 import { DATE_PICKER } from '../utils/constants';
-import { queryDateFormatter } from '../utils/helpers';
+import { queryDateFormatter } from '../utils/helpers/common';
 
 const { YEARS, MONTHS } = DATE_PICKER;
 
-const Container = styled.div`
+const Container = styled(Col)`
   display: flex;
-  align-items: center;
   justify-content: center;
 
   & .react-datepicker {
@@ -49,6 +49,18 @@ const Container = styled.div`
   & select {
     border: 0;
   }
+
+  @media (max-width: 480px) {
+    & .react-datepicker {
+      width: 100%;
+      height: 350px;
+    }
+    & .react-datepicker__day, .react-datepicker__day-name {
+      width: 2rem;
+      height: 2rem;
+      padding-top: .2rem;
+    }
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -64,6 +76,10 @@ const ButtonWrapper = styled.div`
     border-color: #E5E5E5;
     font-weight: 600;
   }
+
+  @media (max-width: 480px) {
+    left: 23%;
+  }
 `;
 
 const BottomButtons = styled.button`
@@ -73,7 +89,7 @@ const BottomButtons = styled.button`
 function DatePickerComponent() {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(null);
-  const [query, setQuery] = useQueryParams({
+  const [, setQuery] = useQueryParams({
     startDate: StringParam,
     endDate: StringParam
   });
@@ -93,17 +109,17 @@ function DatePickerComponent() {
     });
     setStartDate(new Date());
     setEndDate(null);
-  }
+  };
   
   const handleFinish = () => {
     setQuery({
       startDate: queryDateFormatter(startDate),
       endDate: queryDateFormatter(endDate)
     });
-  }
+  };
 
   return (
-    <Container>
+    <Container xs={24} xl={8}>
       <DatePicker
         renderCustomHeader={({
           date,
@@ -121,9 +137,10 @@ function DatePickerComponent() {
             style={{
               margin: 10,
               display: "flex",
-              justifyContent: "space-evenly",
+              justifyContent: "space-evenly"
             }}
           >
+            {/* // TO DO : make dedicated button component */}
             <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
               {"<"}
             </button>
@@ -147,7 +164,6 @@ function DatePickerComponent() {
               {"<"}
             </button>
             <select
-              // value={getYear(date)}
               value={new Date(date).getFullYear()}
               onChange={({ target: { value } }) => changeYear(value)}
             >
@@ -170,13 +186,13 @@ function DatePickerComponent() {
         inline
         style={{ height: '400px', width: '400px' }}
       >
-        <ButtonWrapper>
+        <ButtonWrapper role="group">
           <BottomButtons onClick={handleCancel}>Cancel</BottomButtons>
           <BottomButtons filter="true" onClick={handleFinish}>Filter</BottomButtons>
         </ButtonWrapper>
       </DatePicker>
     </Container>
   );
-};
+}
 
 export default DatePickerComponent;

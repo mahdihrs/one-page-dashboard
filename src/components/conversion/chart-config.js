@@ -1,5 +1,5 @@
-function getPointCategoryName(point) {
-  return `${point.name}: <b>$${point.y}</b>`
+function getTooltip(point) {
+  return `${point.name}: <b>$${point.y}</b>`;
 }
 
 export function conversionPie({ data, width }) {
@@ -9,15 +9,14 @@ export function conversionPie({ data, width }) {
       plotBorderWidth: null,
       plotShadow: false,
       type: 'pie',
-      width: 250
+      width
     },
     title: {
       text: ''
     },
     tooltip: {
-      // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
       formatter: function() {
-        return getPointCategoryName(this.point)
+        return getTooltip(this.point);
       }
     },
     accessibility: {
@@ -40,5 +39,5 @@ export function conversionPie({ data, width }) {
       colorByPoint: true,
       data
     }]
-  }
+  };
 }

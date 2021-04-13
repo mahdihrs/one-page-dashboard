@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Tag as LabelTag } from 'antd';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const TagText = styled.span`
@@ -16,13 +17,13 @@ const TagWrapper = styled(LabelTag)`
 function getLabelColor(text) {
   switch (text) {
     case 'pending':
-      return '#E69849'
+      return '#E69849';
     case 'completed':
-      return '#789764'
+      return '#789764';
     case 'canceled':
-      return '#D66D4B'
+      return '#D66D4B';
     default:
-      throw new Error('Unidentified Label')
+      throw new Error('Unidentified Label');
   }
 }
 
@@ -33,5 +34,9 @@ function Tag({ text }) {
     </TagWrapper>
   );
 }
+
+Tag.propTypes = {
+  text: PropTypes.string
+};
 
 export default Tag;

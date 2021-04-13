@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Tag from '../tags';
-import { dateFormatter } from '../../utils/helpers';
+import { dateFormatter } from '../../utils/helpers/common';
 
 const columns = [
   {
@@ -13,6 +13,7 @@ const columns = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
+    // eslint-disable-next-line react/display-name
     render: text => <Tag text={text} />
   },
   {
@@ -37,6 +38,6 @@ const columns = [
     key: 'due_date',
     render: text => dateFormatter(text)
   }
-]
+];
 
 export default columns;

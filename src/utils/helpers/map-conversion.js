@@ -7,7 +7,7 @@ function mapConversion(data) {
       newOrders[orderAvailable] = {
         name: newOrders[orderAvailable].name,
         y: newOrders[orderAvailable].y + +order.conversion_revenue
-      }
+      };
     } else {
       newOrders = [
         ...newOrders,
@@ -15,7 +15,7 @@ function mapConversion(data) {
           name: order.conversion_item,
           y: +order.conversion_revenue
         }
-      ]
+      ];
     }
   });
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Row } from 'antd';
 
 import Users from '../components/users';
 import Conversion from '../components/conversion';
@@ -9,33 +10,13 @@ import DatePicker from '../components/date-picker';
 import { FIRST_DATA_FETCHED, useDashboard } from '../utils/context';
 import useFetch from '../utils/custom-hooks';
 
-const TopWidgets = styled.div`
-  margin: 1rem;
-  display: grid;
-  grid-template-columns: auto;
-  grid-column-gap: 10px;
-  grid-row-gap: 25px;
-
-  @media (min-width: 1024px) {
-    grid-template-columns: auto auto;
-  }
-  @media (min-width: 1440px) {
-    grid-template-columns: auto auto auto auto;
-  }
+const ChartsContainer = styled(Row)`
+  margin: 2rem 1rem;
 `;
-
-const BottomWidgets = styled.div`
-  margin: 1rem;
-  display: grid;
-  grid-template-columns: auto auto auto;
-  grid-column-gap: 10px;
-  grid-row-gap: 25px;
-`;
-
 
 function Main() {
   const [, dispatch] = useDashboard();
-  const { response, loading, error } = useFetch();
+  const { response, loading } = useFetch();
 
   React.useEffect(() => {
     if (response) {
@@ -43,23 +24,29 @@ function Main() {
         type: FIRST_DATA_FETCHED,
         users: response?.user_category,
         orders: response?.orders
-      })
+      });
     }
-  }, [response, dispatch])
+  }, [response, dispatch]);
 
   return (
     <>
-      <TopWidgets justify="space-between">
-        <Conversion />
-        <Users />
-        <Revenue />
-      </TopWidgets>
-      <BottomWidgets>
-        <DatePicker />
-        <Orders />
-      </BottomWidgets>
+      {loading ?
+        <h1>Loading dashboard data ...</h1> : (
+          <>
+            <ChartsContainer justify="space-between" >
+              <Conversion />
+              <Users />
+              <Revenue />
+            </ChartsContainer>
+            <ChartsContainer justify="space-between" >
+              <DatePicker />
+              <Orders />
+            </ChartsContainer>
+          </>
+        )
+      }
     </>
-  )
+  );
 }
 
 export default Main;
