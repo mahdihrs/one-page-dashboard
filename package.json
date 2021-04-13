@@ -2,7 +2,9 @@
   "name": "simple-dashboard-cra",
   "version": "0.1.0",
   "private": true,
+  "author": "Mahdi Haris",
   "dependencies": {
+    "@craco/craco": "^6.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -10,10 +12,15 @@
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
     "highcharts": "^9.0.1",
-    "highcharts-grouped-categories": "^1.1.7",
     "highcharts-react-official": "^3.0.0",
+    "prop-types": "^15.7.2",
+    "query-string": "^7.0.0",
     "react": "^17.0.2",
+    "react-datepicker": "^3.7.0",
     "react-dom": "^17.0.2",
+    "react-error-boundary": "^3.1.1",
+    "react-responsive": "^8.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.2.3",
     "use-query-params": "^1.2.2",
@@ -21,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -42,5 +49,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/react-hooks": "^5.1.1",
+    "eslint": "^7.24.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "msw": "^0.28.1",
+    "prettier": "^2.2.1"
   }
 }
