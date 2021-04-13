@@ -6,7 +6,6 @@ import {
   ErrorPreTitle,
   ErrorMessage
 } from './components';
-// import somethingWrong from '../../assets/images/something-wrong.svg';
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (

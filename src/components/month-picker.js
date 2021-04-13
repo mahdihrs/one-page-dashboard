@@ -11,12 +11,12 @@ function MonthPicker() {
   const [query, setQuery] = useQueryParams({
     revStart: StringParam,
     revEnd: StringParam
-});
+  });
 
-  const onChange = ([startDate, endDate]) => {
+  const onChange = (dates) => {
     setQuery({
-      revStart: queryMonthFormatter(startDate),
-      revEnd: queryMonthFormatter(endDate)
+      revStart: queryMonthFormatter(dates?.startDate),
+      revEnd: queryMonthFormatter(dates?.endDate)
     });
   };
 

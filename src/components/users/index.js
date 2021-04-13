@@ -23,19 +23,12 @@ function Users() {
     mobileWidth: 200
   });
   const totalUsersAllCategories = Object.values(users).reduce((accumulator, user) => accumulator + +user, 0);
-  // TO DO check in profiler
+
   const userCategory = Object.keys(users)?.map(user => ({
     name: user,
     y: getPercentage({ value: +users[user], total: totalUsersAllCategories }),
     z: +users[user]
   }));
-  // const userCategory = React.useMemo(() => {
-  //   Object.keys(users)?.map(user => ({
-  //     name: user,
-  //     y: getPercentage({ value: +users[user], total: totalUsersAllCategories }),
-  //     z: +users[user]
-  //   }))
-  // }, [totalUsersAllCategories, users])
 
   return (
     <WidgetWrapper id="users" xs={24} lg={11} xl={6}>
