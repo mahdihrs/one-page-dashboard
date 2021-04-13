@@ -15,8 +15,8 @@ function MonthPicker() {
 
   const onChange = (dates) => {
     setQuery({
-      revStart: queryMonthFormatter(dates?.startDate),
-      revEnd: queryMonthFormatter(dates?.endDate)
+      revStart: queryMonthFormatter(dates?.[0]),
+      revEnd: queryMonthFormatter(dates?.[1])
     });
   };
 
@@ -26,6 +26,7 @@ function MonthPicker() {
       format="MMM-YYYY"
       onChange={onChange}
       value={query.revStart && [dayjs(query.revStart), dayjs(query.revEnd)]}
+      allowClear={false}
     />
   );
 }

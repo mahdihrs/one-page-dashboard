@@ -140,7 +140,6 @@ function DatePickerComponent() {
               justifyContent: "space-evenly"
             }}
           >
-            {/* // TO DO : make dedicated button component */}
             <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
               {"<"}
             </button>

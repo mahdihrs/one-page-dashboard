@@ -18,7 +18,6 @@ function Orders() {
     startDate: StringParam,
     endDate: StringParam
   });
-  // const [loading, setLoading] = React.useState(false);
 
   const ordersMapped = query.startDate && query.endDate ? orders?.filter(order => {
     const unixDueDate = dayjs(order.due_date).unix();
@@ -33,8 +32,6 @@ function Orders() {
       <Table
         columns={columns}
         dataSource={ordersMapped}
-        // style={{ minWidth: '700px'}}
-        // loading={loading}
         scroll={{ x: 320 }}
         pagination={{
           defaultPageSize: 5,

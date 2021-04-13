@@ -10,7 +10,6 @@ function useMediaQuery({
 } = {}) {
   const [width, setWidth] = React.useState(600);
 
-  // const isBigScreen = useMediaQueryResponsive({ query: '(min-device-width: 1440px)' });
   const isDesktopOrLaptop = useMediaQueryResponsive({ query: '(min-device-width: 1440px)' });
   const isSmallDesktopOrLaptop = useMediaQueryResponsive({ query: '(min-device-width: 1200px)' });
   const isTabletOrMobile = useMediaQueryResponsive({ query: '(min-device-width: 992px)' });

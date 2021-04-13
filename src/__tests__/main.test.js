@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import * as React from 'react';
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { QueryParamProvider } from 'use-query-params';
@@ -27,16 +28,17 @@ const server = setupServer(
           "conservative": "474",
           "moderate": "182",
           "risk_taker": "607"
-        },
+        }
       }
-    }))
+    }));
   }
-)
+);
 
-beforeAll(() => server.listen())
+beforeAll(() => server.listen());
 // afterEach(() => server.resetHandlers()) //
-afterAll(() => server.close())
+afterAll(() => server.close());
 
+// eslint-disable-next-line react/prop-types
 const Wrapper = ({ children }) => (
   <DashboardProvider>
     <BrowserRouter>
@@ -45,19 +47,19 @@ const Wrapper = ({ children }) => (
       </QueryParamProvider>
     </BrowserRouter>
   </DashboardProvider>
-)
+);
 
 test('show loading screen', () => {
   render(<Main />, { wrapper: Wrapper });
   const loading = screen.getByText(/loading/i);
   expect(loading).toBeInTheDocument();
-})
+});
 
 test('getting dashboard data', async () => {
   render(<Main />, { wrapper: Wrapper });
   await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
   expect(screen.getByText(/conversion/i)).toBeInTheDocument();
-})
+});
 
 test("should render error context consumer withour provider", () => {
   expect(() => render(<Main />)).toThrow(

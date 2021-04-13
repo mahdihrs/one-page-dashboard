@@ -149,8 +149,6 @@ function Header() {
             </LeftHeaderComponents>
             <RightHeaderComponents>
               <Input
-                // onChange={handleChange}
-                // value={key}
                 placeholder="Search text"
                 suffix={Suffix()}
               />
