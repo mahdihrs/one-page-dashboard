@@ -25,7 +25,7 @@ export default function DashboardProvider(props) {
     orders: null
   })
 
-  const value = [state, dispatch];
+  const value = React.useMemo(() => [state, dispatch], [state, dispatch]);
   return <DashboardContext.Provider value={value} {...props} />;
 }
 
