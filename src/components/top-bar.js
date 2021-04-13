@@ -1,8 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { useMediaQuery } from 'react-responsive';
 import { Input as InputAntd } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, MenuOutlined } from '@ant-design/icons';
 
+import Drawer from './drawer';
 import bareksaLogo from '../assets/icons/bareksa.svg';
 import bellLogo from '../assets/icons/bell.svg';
 import settingsLogo from '../assets/icons/settings.svg';
@@ -98,44 +100,73 @@ const SuffixComponent = styled(SearchOutlined)`
   font-size: 1.25rem;
 `;
 
+const MobileMenuIcon = styled.button`
+  border: 0;
+  width: 3rem;
+  border-radius: 15px;
+  background-color: #82C341;
+  color: #FFFFFF;
+`;
+
 const Suffix = (onClick) => <SuffixComponent onClick={onClick} />;
 
 function Header() {
+  const isMobileDevice = useMediaQuery({ query: '(max-device-width: 750px)' });
+  const [visible, setVisible] = React.useState(false);
+  
+  const onShow = () => setVisible(true);
+
   return (
     <Container>
-      <LeftHeaderComponents>
-        <HeaderIconWrapper>
-          <img src={bareksaLogo} alt="Bareksa" />
-        </HeaderIconWrapper>
-        <UserInfoWrapper>
-          <UserLogo />
-          <div>
-            <UserFullName>
-              Reinhart. H
+      {isMobileDevice ?
+        (
+          <>
+            <HeaderIconWrapper>
+              <img src={bareksaLogo} alt="Bareksa" />
+            </HeaderIconWrapper>
+            <MobileMenuIcon onClick={onShow}>
+              <MenuOutlined />
+            </MobileMenuIcon>
+            <Drawer visible={visible} setVisible={setVisible} />
+          </>
+        ) : (
+          <>
+            <LeftHeaderComponents>
+              <HeaderIconWrapper>
+                <img src={bareksaLogo} alt="Bareksa" />
+              </HeaderIconWrapper>
+              <UserInfoWrapper>
+                <UserLogo />
+                <div>
+                  <UserFullName>
+                    Reinhart. H
             </UserFullName>
-            <UserLocation>
-              Kemang, Jakarta
+                  <UserLocation>
+                    Kemang, Jakarta
             </UserLocation>
-          </div>
-        </UserInfoWrapper>
-      </LeftHeaderComponents>
-      <RightHeaderComponents>
-        <Input
-          // onChange={handleChange}
-          // value={key}
-          placeholder="Search text"
-          suffix={Suffix()}
-        />
-        <BellLogoWrapper>
-          <img src={bellLogo} alt="" />
-          <NotificationAlert />
-        </BellLogoWrapper>
-        <HeaderIconWrapper>
-          <img src={settingsLogo} alt="" />
-        </HeaderIconWrapper>
-      </RightHeaderComponents>
+                </div>
+              </UserInfoWrapper>
+            </LeftHeaderComponents>
+            <RightHeaderComponents>
+              <Input
+                // onChange={handleChange}
+                // value={key}
+                placeholder="Search text"
+                suffix={Suffix()}
+              />
+              <BellLogoWrapper>
+                <img src={bellLogo} alt="" />
+                <NotificationAlert />
+              </BellLogoWrapper>
+              <HeaderIconWrapper>
+                <img src={settingsLogo} alt="" />
+              </HeaderIconWrapper>
+            </RightHeaderComponents>
+          </>
+        )
+      }
     </Container>
-  )
+  );
 }
 
 function UserLogo() {

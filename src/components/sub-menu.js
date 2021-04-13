@@ -17,4 +17,4 @@ function SubMenu() {
   );
 }
 
-export default SubMenu
+export default SubMenu;
